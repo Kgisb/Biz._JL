@@ -1,9 +1,16 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 import pandas as pd
 import streamlit as st
 
 # Load data from Google Sheet
 sheet_url = "https://docs.google.com/spreadsheets/d/16U4reJDdvGQb6lqN9LF-A2QVwsJdNBV1CqqcyuHcHXk/export?format=csv&gid=908334443"
+
+st.title("Interactive AC_Name Filter")
+
 try:
+    # Load data from the provided URL
     df = pd.read_csv(sheet_url)
     st.success("Data loaded successfully!")
 except Exception as e:
@@ -13,13 +20,10 @@ except Exception as e:
 # Clean column names
 df.columns = df.columns.str.strip()
 
-# Validate if AC_Name column exists
+# Validate if the required column exists
 if 'AC_Name' not in df.columns:
-    st.error("Column 'AC_Name' not found in the dataset. Please check the data source.")
+    st.error("The column 'AC_Name' is missing from the dataset. Please check the data source.")
     st.stop()
-
-# Streamlit App
-st.title("Interactive AC_Name Filter")
 
 # Display dropdown to select an AC_Name
 selected_ac = st.selectbox("Select an AC_Name:", df['AC_Name'].dropna().unique())
